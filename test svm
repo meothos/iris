@@ -1,0 +1,31 @@
+#Importing librairies
+
+import pandas as pd 
+import numpy as np
+
+# Scikit-learn library: For SVM
+from sklearn import preprocessing
+from sklearn.metrics import confusion_matrix
+from sklearn import svm
+from sklearn import model_selection
+
+
+data = pd.read_csv('~/Iris.csv') # Reading the file .csv
+df = pd.DataFrame(data) # Converting data to Panda DataFrame
+
+# train and test samples
+from sklearn.cross_validation import train_test_split
+train, test = train_test_split(df, test_size=0.33, random_state=42)
+
+X_train = train.drop(['Id', 'Species'],axis=1) # We drop the features Id and the Species (label)
+y_train = train['Species']
+X_test = test.drop(['Id', 'Species'],axis=1) # We drop Id and Scpecies
+y_test = test['Species']
+
+# model training
+classifier = svm.SVC(kernel='linear') 
+classifier.fit(X_train, y_train) # we train our model
+
+prediction_SVM_all = classifier.predict(X_test) # we predict our data test.
+cm = confusion_matrix(y_test, prediction_SVM_all)
+cm
